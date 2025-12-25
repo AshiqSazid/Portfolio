@@ -16,14 +16,6 @@ import Spline from "@splinetool/react-spline";
 import Link from "next/link";
 import { cn, scrollTo } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  type CarouselApi,
-} from "@/components/ui/carousel";
 import VanillaTilt from "vanilla-tilt";
 import { motion } from "framer-motion";
 
@@ -266,9 +258,6 @@ const skills = [
 export default function Home() {
   const refScrollContainer = useRef(null);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
-  const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
-  const [current, setCurrent] = useState<number>(0);
-  const [count, setCount] = useState<number>(0);
 
   // handle scroll
   useEffect(() => {
@@ -310,17 +299,6 @@ export default function Home() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  useEffect(() => {
-    if (!carouselApi) return;
-
-    setCount(carouselApi.scrollSnapList().length);
-    setCurrent(carouselApi.selectedScrollSnap() + 1);
-
-    carouselApi.on("select", () => {
-      setCurrent(carouselApi.selectedScrollSnap() + 1);
-    });
-  }, [carouselApi]);
 
   // card hover effect
   useEffect(() => {
@@ -611,53 +589,42 @@ export default function Home() {
               Selected projects spanning computer vision, NLP, and data analysis.
             </p>
 
-            {/* Carousel */}
-            <div className="mt-14">
-              <Carousel setApi={setCarouselApi} className="w-full">
-                <CarouselContent>
-                  {projects.map((project) => (
-                    <CarouselItem key={project.title} className="md:basis-1/2">
-                      <Card data-tilt className="h-full">
-                        <CardHeader className="space-y-2">
-                          <span className="text-xs uppercase tracking-wide text-muted-foreground">
-                            {project.category}
-                          </span>
-                          <CardTitle className="text-lg font-medium tracking-tight">
-                            <Link
-                              href={project.href}
-                              target="_blank"
-                              rel="noreferrer noopener"
-                              className="transition hover:text-primary"
-                            >
-                              {project.title}
-                            </Link>
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent className="px-6 pb-6 text-sm text-muted-foreground">
-                          <p>{project.description}</p>
-                          <Link
-                            href={project.href}
-                            target="_blank"
-                            rel="noreferrer noopener"
-                            className="mt-4 inline-flex items-center text-xs font-semibold text-primary"
-                          >
-                            View project
-                            <ChevronRight className="ml-1 h-3 w-3" />
-                          </Link>
-                        </CardContent>
-                      </Card>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
-              <div className="py-2 text-center text-sm text-muted-foreground">
-                <span className="font-semibold">
-                  {current} / {count}
-                </span>{" "}
-                projects
-              </div>
+            <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+              {projects.map((project) => (
+                <Card
+                  key={project.title}
+                  data-tilt
+                  className="flex h-full flex-col"
+                >
+                  <CardHeader className="space-y-2">
+                    <span className="text-xs uppercase tracking-wide text-muted-foreground">
+                      {project.category}
+                    </span>
+                    <CardTitle className="text-lg font-medium tracking-tight">
+                      <Link
+                        href={project.href}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="transition hover:text-primary"
+                      >
+                        {project.title}
+                      </Link>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="mt-auto px-6 pb-6 text-sm text-muted-foreground">
+                    <p>{project.description}</p>
+                    <Link
+                      href={project.href}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="mt-4 inline-flex items-center text-xs font-semibold text-primary"
+                    >
+                      View project
+                      <ChevronRight className="ml-1 h-3 w-3" />
+                    </Link>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </section>
