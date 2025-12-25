@@ -24,6 +24,7 @@ type NavProps = {
   href: string;
   i: number;
   className?: string;
+  onClick?: () => void;
 };
 
 const variants = {
@@ -38,9 +39,12 @@ const variants = {
 
 const navLinks = [
   { href: "#home", text: "Home" },
-  { href: "#about", text: "About" },
+  { href: "#about", text: "Objective" },
+  { href: "#education", text: "Education" },
+  { href: "#experience", text: "Experience" },
+  { href: "#publications", text: "Publications" },
   { href: "#projects", text: "Projects" },
-  { href: "#services", text: "Services" },
+  { href: "#skills", text: "Skills" },
   { href: "#contact", text: "Contact" },
 ];
 
@@ -55,6 +59,13 @@ function handleClick(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
 }
 
 function NavItem(props: NavProps) {
+  const handleNavClick = (
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+  ) => {
+    handleClick(event);
+    props.onClick?.();
+  };
+
   return (
     <motion.li
       className={props.className}
@@ -66,7 +77,7 @@ function NavItem(props: NavProps) {
     >
       <a
         href={props.href}
-        onClick={handleClick}
+        onClick={handleNavClick}
         className={cn(props.i === 0 && "nav-active", "nav-link")}
       >
         {props.text}
@@ -82,9 +93,11 @@ export default function Container(props: ContainerProps) {
 
   const { children, ...customMeta } = props;
   const router = useRouter();
+  const siteUrl = "https://ashiqsazid.vercel.app";
   const meta = {
-    title: "Wendo",
-    description: `Full-stack website developer and TypeScript enthusiast.`,
+    title: "Md. Ashiq Ul Islam Sajid",
+    description:
+      "AI/ML backend developer and machine learning researcher based in Dhaka, Bangladesh.",
     image: "/assets/logo.webp",
     type: "website",
     ...customMeta,
@@ -121,19 +134,16 @@ export default function Container(props: ContainerProps) {
         <meta content={meta.description} name="description" />
         <meta
           property="og:url"
-          content={`https://www.wendoj.codes${router.asPath}`}
+          content={`${siteUrl}${router.asPath}`}
         />
-        <link
-          rel="canonical"
-          href={`https://www.wendoj.codes${router.asPath}`}
-        />
+        <link rel="canonical" href={`${siteUrl}${router.asPath}`} />
         <meta property="og:type" content={meta.type} />
-        <meta property="og:site_name" content="WendoJ" />
+        <meta property="og:site_name" content="Ashiq Sazid" />
         <meta property="og:description" content={meta.description} />
         <meta property="og:title" content={meta.title} />
         <meta property="og:image" content={meta.image} />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="WendoJ" />
+        <meta name="twitter:site" content="Ashiq Sazid" />
         <meta name="twitter:title" content={meta.title} />
         <meta name="twitter:description" content={meta.description} />
         <meta name="twitter:image" content={meta.image} />
@@ -164,7 +174,7 @@ export default function Container(props: ContainerProps) {
           </button>
         </div>
         <Link href="/">
-          <span className="text-lg font-semibold">wendo</span>
+          <span className="text-lg font-semibold">Ashiq Sazid</span>
         </Link>
 
         {/* Desktop menu */}
@@ -207,21 +217,22 @@ export default function Container(props: ContainerProps) {
                 {/* Links */}
                 <ul className="flex min-h-fit w-full flex-col items-start space-y-6 px-[22px] py-[58px]">
                   {navLinks.map((link, i) => (
-                    <button key={link.href} onClick={() => setIsOpen(false)}>
-                      <NavItem
-                        href={link.href}
-                        text={link.text}
-                        i={i}
-                        className="text-xl"
-                      />
-                    </button>
+                    <NavItem
+                      key={link.href}
+                      href={link.href}
+                      text={link.text}
+                      i={i}
+                      className="text-xl"
+                      onClick={() => setIsOpen(false)}
+                    />
                   ))}
                 </ul>
 
                 {/* Footer */}
                 <div className="flex min-h-fit w-full flex-col space-y-8 px-[22px] py-10">
                   <span className="text-sm text-muted-foreground">
-                    © {new Date().getFullYear()} wendo. All rights reserved.
+                    © {new Date().getFullYear()} Ashiq Sazid. All rights
+                    reserved.
                   </span>
                 </div>
               </div>

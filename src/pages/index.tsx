@@ -3,18 +3,18 @@ import { useEffect, useRef, Suspense, useState } from "react";
 import styles from "@/styles/Home.module.css";
 import { Button } from "@/components/ui/button";
 import {
+  Brain,
+  Bot,
   ChevronRight,
+  Cloud,
   Code2,
-  Frame,
-  SearchCheck,
-  Eye,
-  MonitorSmartphone,
+  Database,
+  Wrench,
 } from "lucide-react";
 import { TriangleDownIcon } from "@radix-ui/react-icons";
 import Spline from "@splinetool/react-spline";
 import Link from "next/link";
 import { cn, scrollTo } from "@/lib/utils";
-import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Carousel,
@@ -28,74 +28,238 @@ import VanillaTilt from "vanilla-tilt";
 import { motion } from "framer-motion";
 
 const aboutStats = [
-  { label: "Years of experience", value: "3+" },
-  { label: "Technologies mastered", value: "5+" },
-  { label: "Companies worked with", value: "15+" },
+  { label: "Research papers published", value: "12" },
+  { label: "Papers under review", value: "4" },
+  { label: "International conferences", value: "10" },
+];
+
+const education = [
+  {
+    school: "BRAC University",
+    degree: "BSc in Computer Science",
+    coursework:
+      "Data Structures and Algorithms, Operating Systems, Artificial Intelligence, Neural Networks, Assembly Languages, Database Systems, Digital Image Processing, Computer Architecture, Comparative Learning Algorithms, Computational Theory, Natural Language Processing.",
+  },
+];
+
+const experience = [
+  {
+    company: "Sparktech",
+    role: "AI Backend Developer",
+  },
+  {
+    company: "Moodifai",
+    role: "AI/ML Backend Developer",
+    details: [
+      "USA-based startup and research company.",
+      "Moodsinger - captures and analyzes lyrical and audio sentiment of songs.",
+      "TheraMuse - music therapy app supporting children with Down syndrome and individuals living with dementia.",
+    ],
+  },
+];
+
+const publicationAuthors = "Md. Ashiq Ul Islam Sajid, et al.";
+
+const publications = [
+  {
+    venue: "IEEE Xplore, France",
+    date: "Nov 2024",
+    title:
+      "Optimizing Multimodal Transformers for Medical Image Captioning: Enhancing Automated Descriptions via AI Systems",
+  },
+  {
+    venue: "ICAII, Washington, DC, USA",
+    date: "Oct 2025",
+    title:
+      "Vertical AI for Kidney Stone Detection: Knowledge-Distilled CNNs with Student-Teacher Model for Ultrasound Imaging",
+  },
+  {
+    venue: "ICMLA, Boca Raton, FL, USA",
+    date: "Nov 2025",
+    title:
+      "XAI-PredictFare: Comparative Flight Fare Prediction using Machine Learning Models with Dual Explainability through LIME and SHAP",
+  },
+  {
+    venue: "Springer, Australia",
+    date: "Oct 2024",
+    title:
+      "Enhancing User Experience by Tackling the Cold Start Challenge in Product Recommendation System",
+  },
+  {
+    venue: "Springer, Taiwan",
+    date: "Nov 2024",
+    title:
+      "Augmented 3D U-Net Architecture for Accurate Multimodal MRI Brain Tumor Segmentation",
+  },
+  {
+    venue: "Springer, Taiwan",
+    date: "Nov 2024",
+    title:
+      "Enhanced Calorie Estimation of Solid Foods using Federated Learning and YOLO Models: A Distributed Approach for Collaborative Caloric Data Analysis",
+  },
+  {
+    venue: "ICITS, USA",
+    date: "Jan 2025",
+    title:
+      "A Dual-Mode LLM Framework for Medical and General Language Translation for Breaking Barriers in Healthcare Communication",
+  },
+  {
+    venue: "ISDFS, USA",
+    date: "Jan 2025",
+    title: "Customer Personality Analysis using Machine Learning with Explainable AI",
+  },
+  {
+    venue: "ICMI, USA",
+    date: "Mar 2025",
+    title:
+      "A Hybrid Attention-Guided Fusion Network with Grad-CAM for MPox Skin Lesion Classification",
+  },
+  {
+    venue: "ICOCT, China",
+    date: "Mar 2025",
+    title:
+      "Advancing Sentiment Analysis: Fine-Tuning LLMs and Traditional Machine Learning Models for Noisy Bangla Texts",
+  },
+  {
+    venue: "AHTBE, Canada",
+    date: "Jun 2025",
+    title:
+      "MedViT-HoVer++ (ViT): A Unified Transformer-Guided Framework for Multitask Nucleus Segmentation, Classification, and Count Regression in Histopathology Images",
+  },
+  {
+    venue: "ACM, Bangladesh",
+    date: "Nov 2024",
+    title: "Optimized Malaria Identification through Transfer Learning Approach",
+  },
 ];
 
 const projects = [
   {
-    title: "Unqueue",
-    description: "E-commerce platform for selling digital products",
-    image: "/assets/unqueue.webm",
-    href: "https://unqueue.shop/",
+    title: "MedViT-HoVer++ (ViT)",
+    description:
+      "Transformer-guided framework for multitask nucleus segmentation, classification, and count regression in histopathology images.",
+    href: "https://github.com/AshiqSazid/MedViT-HoVer-ViT-A-Unified-Transformer-Guided-Framework-for-Multitask-Nucleus-Segmentation-Classific/tree/main",
+    category: "Machine Learning",
   },
   {
-    title: "InfiniteVPS",
-    description: "High performance VPS hosting solution",
-    image: "/assets/infinitevps.webm",
-    href: "#",
+    title: "Military Bullet Detection System",
+    description:
+      "YOLOv8 pipeline with real-time CCTV inference and Weighted Boxes Fusion ensemble.",
+    href: "https://drive.google.com/drive/folders/1iKnKvZZlmp0eMLuE-XW69WwqY3ytjtSD?usp=sharing",
+    category: "Machine Learning",
   },
   {
-    title: "TranslateBot",
-    description: "Powerful Multilingual Translation Bot for Discord",
-    image: "/assets/translate_bot.webm",
-    href: "https://translatebot.app/",
+    title: "Brain Tumor Segmentation",
+    description:
+      "Automated brain tumor detection and segmentation using 3D U-Net and TensorFlow.",
+    href: "https://github.com/AshiqSazid/Data-Science-Brain-Tumor-Segmentation",
+    category: "Machine Learning",
   },
   {
-    title: "Wrona",
-    description: "Robotics-focused technology company",
-    image: "/assets/wrona.jpeg",
-    href: "https://www.wrona.com/",
+    title: "Music Annotation Prediction",
+    description:
+      "MuseScore extension using Mistral 7B to grade performances with pitch, rhythm, and dynamics analysis.",
+    href: "https://github.com/AshiqSazid/music-annotation-correction",
+    category: "Machine Learning",
   },
   {
-    title: "This website",
-    description: "My personal website",
-    image: "/assets/portfolio.webm",
-    href: "https://github.com/wendoj/portfolio",
+    title: "Kidney Knowledge Distillation",
+    description:
+      "Knowledge-distilled CNNs for ultrasound kidney stone detection.",
+    href: "https://github.com/AshiqSazid/kidney-us",
+    category: "Machine Learning",
+  },
+  {
+    title: "Music Popularity and Sentiment Prediction",
+    description:
+      "Predicts popularity and sentiment from lyrics and audio using ML models and Qwen3 8B.",
+    href: "https://github.com/AshiqSazid/music",
+    category: "Machine Learning",
+  },
+  {
+    title: "AI Sentiment Analysis Chatbot",
+    description: "Chatbot built with Django, JavaScript, and SQLite.",
+    href: "https://github.com/AshiqSazid/Chatbot",
+    category: "Machine Learning",
+  },
+  {
+    title: "Property AI",
+    description:
+      "RAG + LLM assistant for property discovery with FAISS vector search.",
+    href: "https://github.com/AshiqSazid/property_AI",
+    category: "Machine Learning",
+  },
+  {
+    title: "Smokebot",
+    description:
+      "LLM customer support chatbot that handles interruptions and changing questions.",
+    href: "https://github.com/AshiqSazid/Smokebot",
+    category: "Machine Learning",
+  },
+  {
+    title: "Parking Management System",
+    description: "Car parking system built with Laravel and MySQL.",
+    href: "https://github.com/AshiqSazid/Parking-Management-system",
+    category: "Data Science",
+  },
+  {
+    title: "Enemy Attacking Ball Game",
+    description: "Computer graphics game project built with PyOpenGL.",
+    href: "https://github.com/AshiqSazid/Enemy-attacking-ball-game-_Computer-Graphics-Project",
+    category: "Computer Graphics",
+  },
+  {
+    title: "Car Selling Data Analysis",
+    description: "Machine learning model for car price prediction.",
+    href: "https://github.com/AshiqSazid/Car-Data-Analysis",
+    category: "Data Science",
+  },
+  {
+    title: "Drug Addiction Data Analysis",
+    description: "ML analysis and prediction for drug addiction data.",
+    href: "https://github.com/AshiqSazid/Drug-Analysis-Data-Analysis",
+    category: "Data Science",
+  },
+  {
+    title: "BMW Price Prediction",
+    description: "Price prediction for BMW vehicles using machine learning.",
+    href: "https://github.com/AshiqSazid/Drug-Analysis-Data-Analysi",
+    category: "Data Science",
   },
 ];
 
-const services = [
+const skills = [
   {
-    service: "Frontend Development",
-    description:
-      "Creating stellar user interfaces and web experiences using the latest technologies.",
+    title: "Programming and Backend",
+    description: "Python, Django, Flask, FastAPI.",
     icon: Code2,
   },
   {
-    service: "UX Design",
-    description:
-      "Building intuitive, user-centric designs that drive engagement and conversion.",
-    icon: Frame,
+    title: "Machine Learning",
+    description: "TensorFlow, PyTorch, Keras, scikit-learn, Hugging Face.",
+    icon: Brain,
   },
   {
-    service: "SEO Optimization",
+    title: "LLMs and RAG",
     description:
-      "Enhancing your website's visibility in search engines for increased organic traffic.",
-    icon: SearchCheck,
+      "LangChain, LlamaIndex, fine-tuning, prompt engineering, DeepSeek, LLaMA, Qwen, GPT, Ollama.",
+    icon: Bot,
   },
   {
-    service: "Responsive Design",
-    description:
-      "Designing websites that look and perform equally well on all devices and screen sizes.",
-    icon: MonitorSmartphone,
+    title: "Data Science",
+    description: "Pandas, NumPy, Matplotlib, Seaborn, SQL, MongoDB.",
+    icon: Database,
   },
   {
-    service: "Backend Development",
+    title: "Cloud and DevOps",
+    description: "AWS, Azure, Kafka, Docker, Linux, Git.",
+    icon: Cloud,
+  },
+  {
+    title: "Blockchain and Web3",
     description:
-      "Developing robust, scalable server-side logic for a wide range of web applications.",
-    icon: Eye,
+      "Solidity, Truffle, Ethereum, Hyperledger Fabric, Ganache, MetaMask, Web3.js, ERC-721.",
+    icon: Wrench,
   },
 ];
 
@@ -135,7 +299,6 @@ export default function Home() {
 
         if (li.getAttribute("href") === `#${current}`) {
           li.classList.add("nav-active");
-          console.log(li.getAttribute("href"));
         }
       });
     }
@@ -161,7 +324,9 @@ export default function Home() {
 
   // card hover effect
   useEffect(() => {
-    const tilt: HTMLElement[] = Array.from(document.querySelectorAll("#tilt"));
+    const tilt = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-tilt]"),
+    );
     VanillaTilt.init(tilt, {
       speed: 300,
       glare: true,
@@ -190,9 +355,9 @@ export default function Home() {
               data-scroll-speed=".09"
               className="flex flex-row items-center space-x-1.5"
             >
-              <span className={styles.pill}>next.js</span>
-              <span className={styles.pill}>tailwindcss</span>
-              <span className={styles.pill}>typescript</span>
+              <span className={styles.pill}>machine learning</span>
+              <span className={styles.pill}>data science</span>
+              <span className={styles.pill}>llms</span>
             </div>
             <div>
               <h1
@@ -206,7 +371,7 @@ export default function Home() {
                   <br />
                 </span>
                 <span className="clash-grotesk text-gradient text-6xl 2xl:text-8xl">
-                  WendoJ.
+                  Md. Ashiq Ul Islam Sajid.
                 </span>
               </h1>
               <p
@@ -215,8 +380,9 @@ export default function Home() {
                 data-scroll-speed=".06"
                 className="mt-1 max-w-lg tracking-tight text-muted-foreground 2xl:text-xl"
               >
-                An experienced full-stack website developer with a passion for
-                crafting unique digital experiences.
+                Computer Science graduate focused on machine learning and data
+                science, currently building AI/ML backend systems and publishing
+                research.
               </p>
             </div>
             <span
@@ -225,11 +391,11 @@ export default function Home() {
               data-scroll-speed=".06"
               className="flex flex-row items-center space-x-1.5 pt-6"
             >
-              <Link href="mailto:wendoj@proton.me" passHref>
-                <Button>
+              <Button asChild>
+                <Link href="mailto:ashiqsazid494@gmail.com">
                   Get in touch <ChevronRight className="ml-1 h-4 w-4" />
-                </Button>
-              </Link>
+                </Link>
+              </Button>
               <Button
                 variant="outline"
                 onClick={() => scrollTo(document.querySelector("#about"))}
@@ -260,29 +426,36 @@ export default function Home() {
           </div>
         </section>
 
-        {/* About */}
+        {/* Objective */}
         <section id="about" data-scroll-section>
           <div
             data-scroll
             data-scroll-speed=".4"
             data-scroll-position="top"
-            className="my-14 flex max-w-6xl flex-col justify-start space-y-10"
+            className="my-14 flex max-w-6xl flex-col justify-start space-y-6"
           >
-            <h2 className="py-16  pb-2 text-3xl font-light leading-normal tracking-tighter text-foreground xl:text-[40px]">
-              I&apos;m an experienced full-stack developer proficient in{" "}
+            <span className="text-gradient clash-grotesk text-sm font-semibold tracking-tighter">
+              ✨ Objective
+            </span>
+            <h2 className="text-3xl font-light leading-normal tracking-tighter text-foreground xl:text-[40px]">
+              I am a Computer Science graduate from BRAC University with a focus
+              on machine learning and data science.
+            </h2>
+            <p className="max-w-4xl tracking-tight text-muted-foreground xl:text-lg">
+              I have published 10 research papers and have 4 under review,
+              including three presented at international conferences in
+              Australia and Taiwan. I contribute to open-source projects on{" "}
               <Link
-                href="https://create.t3.gg/"
+                href="https://github.com/AshiqSazid"
                 target="_blank"
+                rel="noreferrer noopener"
                 className="underline"
               >
-                TypeScript, Tailwind, and Next.js
+                GitHub
               </Link>{" "}
-              since 2021. My experience spans from startups to mid-sized
-              companies, where I&apos;ve been instrumental in the entire product
-              design process; from ideation and wireframing, through
-              prototyping, to the delivery of the final product, all while
-              efficiently collaborating with cross-functional teams.
-            </h2>
+              and I am preparing a submission to a Q1 journal and an A*
+              conference.
+            </p>
             <div className="grid grid-cols-2 gap-8 xl:grid-cols-3">
               {aboutStats.map((stat) => (
                 <div
@@ -295,6 +468,115 @@ export default function Home() {
                   <span className="tracking-tight text-muted-foreground xl:text-lg">
                     {stat.label}
                   </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Education */}
+        <section id="education" data-scroll-section>
+          <div
+            data-scroll
+            data-scroll-speed=".4"
+            data-scroll-position="top"
+            className="my-24 flex max-w-6xl flex-col justify-start space-y-8"
+          >
+            <span className="text-gradient clash-grotesk text-sm font-semibold tracking-tighter">
+              🎓 Education
+            </span>
+            <div className="grid gap-6">
+              {education.map((item) => (
+                <div
+                  key={item.school}
+                  className="rounded-md border border-white/5 bg-white/5 p-6"
+                >
+                  <h3 className="text-xl font-medium tracking-tight text-foreground">
+                    {item.school}
+                  </h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {item.degree}
+                  </p>
+                  <p className="mt-4 text-sm text-muted-foreground">
+                    <span className="font-semibold text-foreground">
+                      Coursework:
+                    </span>{" "}
+                    {item.coursework}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Experience */}
+        <section id="experience" data-scroll-section>
+          <div
+            data-scroll
+            data-scroll-speed=".4"
+            data-scroll-position="top"
+            className="my-24 flex max-w-6xl flex-col justify-start space-y-8"
+          >
+            <span className="text-gradient clash-grotesk text-sm font-semibold tracking-tighter">
+              💼 Experience
+            </span>
+            <h2 className="text-3xl font-semibold tracking-tight tracking-tighter xl:text-5xl">
+              AI and ML backend roles.
+            </h2>
+            <div className="grid gap-6 md:grid-cols-2">
+              {experience.map((item) => (
+                <div
+                  key={item.company}
+                  className="rounded-md border border-white/5 bg-white/5 p-6"
+                >
+                  <span className="text-xs uppercase tracking-wide text-muted-foreground">
+                    {item.company}
+                  </span>
+                  <h3 className="mt-2 text-lg font-medium tracking-tight text-foreground">
+                    {item.role}
+                  </h3>
+                  {item.details?.length ? (
+                    <ul className="mt-4 list-disc space-y-2 pl-4 text-sm text-muted-foreground">
+                      {item.details.map((detail) => (
+                        <li key={detail}>{detail}</li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Publications */}
+        <section id="publications" data-scroll-section>
+          <div
+            data-scroll
+            data-scroll-speed=".4"
+            data-scroll-position="top"
+            className="my-24 flex max-w-6xl flex-col justify-start space-y-8"
+          >
+            <span className="text-gradient clash-grotesk text-sm font-semibold tracking-tighter">
+              📄 Publications
+            </span>
+            <h2 className="text-3xl font-semibold tracking-tight tracking-tighter xl:text-5xl">
+              Peer-reviewed research across ML, medical imaging, and NLP.
+            </h2>
+            <div className="grid gap-4 lg:grid-cols-2">
+              {publications.map((publication) => (
+                <div
+                  key={publication.title}
+                  className="rounded-md border border-white/5 bg-white/5 p-5"
+                >
+                  <span className="text-xs uppercase tracking-wide text-muted-foreground">
+                    {publication.venue} · {publication.date}
+                  </span>
+                  <h3 className="mt-2 text-base font-medium tracking-tight text-foreground">
+                    {publication.title}
+                  </h3>
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    {publicationAuthors}
+                  </p>
                 </div>
               ))}
             </div>
@@ -323,11 +605,10 @@ export default function Home() {
               ✨ Projects
             </span>
             <h2 className="mt-3 text-4xl font-semibold tracking-tight tracking-tighter xl:text-6xl">
-              Streamlined digital experiences.
+              Applied ML and data science work.
             </h2>
             <p className="mt-1.5 text-base tracking-tight text-muted-foreground xl:text-lg">
-              I&apos;ve worked on a variety of projects, from small websites to
-              large-scale web applications. Here are some of my favorites:
+              Selected projects spanning computer vision, NLP, and data analysis.
             </p>
 
             {/* Carousel */}
@@ -336,33 +617,33 @@ export default function Home() {
                 <CarouselContent>
                   {projects.map((project) => (
                     <CarouselItem key={project.title} className="md:basis-1/2">
-                      <Card id="tilt">
-                        <CardHeader className="p-0">
-                          <Link href={project.href} target="_blank" passHref>
-                            {project.image.endsWith(".webm") ? (
-                              <video
-                                src={project.image}
-                                autoPlay
-                                loop
-                                muted
-                                className="aspect-video h-full w-full rounded-t-md bg-primary object-cover"
-                              />
-                            ) : (
-                              <Image
-                                src={project.image}
-                                alt={project.title}
-                                width={600}
-                                height={300}
-                                quality={100}
-                                className="aspect-video h-full w-full rounded-t-md bg-primary object-cover"
-                              />
-                            )}
-                          </Link>
-                        </CardHeader>
-                        <CardContent className="absolute bottom-0 w-full bg-background/50 backdrop-blur">
-                          <CardTitle className="border-t border-white/5 p-4 text-base font-normal tracking-tighter">
-                            {project.description}
+                      <Card data-tilt className="h-full">
+                        <CardHeader className="space-y-2">
+                          <span className="text-xs uppercase tracking-wide text-muted-foreground">
+                            {project.category}
+                          </span>
+                          <CardTitle className="text-lg font-medium tracking-tight">
+                            <Link
+                              href={project.href}
+                              target="_blank"
+                              rel="noreferrer noopener"
+                              className="transition hover:text-primary"
+                            >
+                              {project.title}
+                            </Link>
                           </CardTitle>
+                        </CardHeader>
+                        <CardContent className="px-6 pb-6 text-sm text-muted-foreground">
+                          <p>{project.description}</p>
+                          <Link
+                            href={project.href}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            className="mt-4 inline-flex items-center text-xs font-semibold text-primary"
+                          >
+                            View project
+                            <ChevronRight className="ml-1 h-3 w-3" />
+                          </Link>
                         </CardContent>
                       </Card>
                     </CarouselItem>
@@ -381,8 +662,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Services */}
-        <section id="services" data-scroll-section>
+        {/* Skills */}
+        <section id="skills" data-scroll-section>
           <div
             data-scroll
             data-scroll-speed=".4"
@@ -401,28 +682,45 @@ export default function Home() {
             >
               <div className="flex flex-col py-6 xl:p-6">
                 <h2 className="text-4xl font-medium tracking-tight">
-                  Need more info?
+                  Key skills
                   <br />
                   <span className="text-gradient clash-grotesk tracking-normal">
-                    I got you.
+                    across the stack.
                   </span>
                 </h2>
                 <p className="mt-2 tracking-tighter text-secondary-foreground">
-                  Here are some of the services I offer. If you have any
-                  questions, feel free to reach out.
+                  Tools and frameworks used in research and production work.
                 </p>
+                <div className="mt-4 flex flex-wrap gap-3 text-sm text-muted-foreground">
+                  <Link
+                    href="https://github.com/AshiqSazid?tab=repositories"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="underline"
+                  >
+                    GitHub projects
+                  </Link>
+                  <Link
+                    href="https://www.youtube.com/@ashiqsazid/videos"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="underline"
+                  >
+                    Presentations
+                  </Link>
+                </div>
               </div>
-              {services.map((service) => (
+              {skills.map((skill) => (
                 <div
-                  key={service.service}
+                  key={skill.title}
                   className="flex flex-col items-start rounded-md bg-white/5 p-14 shadow-md backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:bg-white/10 hover:shadow-md"
                 >
-                  <service.icon className="my-6 text-primary" size={20} />
+                  <skill.icon className="my-6 text-primary" size={20} />
                   <span className="text-lg tracking-tight text-foreground">
-                    {service.service}
+                    {skill.title}
                   </span>
                   <span className="mt-2 tracking-tighter text-muted-foreground">
-                    {service.description}
+                    {skill.description}
                   </span>
                 </div>
               ))}
@@ -439,16 +737,16 @@ export default function Home() {
             className="flex flex-col items-center justify-center rounded-lg bg-gradient-to-br from-primary/[6.5%] to-white/5 px-8 py-16 text-center xl:py-24"
           >
             <h2 className="text-4xl font-medium tracking-tighter xl:text-6xl">
-              Let&apos;s work{" "}
+              Let&apos;s collaborate{" "}
               <span className="text-gradient clash-grotesk">together.</span>
             </h2>
             <p className="mt-1.5 text-base tracking-tight text-muted-foreground xl:text-lg">
-              I&apos;m currently available for freelance work and open to
-              discussing new projects.
+              Based in Dhaka, Bangladesh and open to research collaborations and
+              ML engineering work.
             </p>
-            <Link href="mailto:wendoj@proton.me" passHref>
-              <Button className="mt-6">Get in touch</Button>
-            </Link>
+            <Button asChild className="mt-6">
+              <Link href="mailto:ashiqsazid494@gmail.com">Get in touch</Link>
+            </Button>
           </div>
         </section>
       </div>
